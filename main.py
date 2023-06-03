@@ -12,7 +12,8 @@ pygame.display.set_caption("Space Shooter Tutorial")
 RED_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_red_small.png"))
 GREEN_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_green_small.png"))
 BLUE_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_blue_small.png"))
-YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "pixel_ship_yellow.png"))
+YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("assets", "yellow.png"))
+YELLOW_SPACE_SHIP = pygame.transform.scale(YELLOW_SPACE_SHIP, (90, 60))  # Resizing blue ship
 RED_SHIP = pygame.image.load(os.path.join("assets", "red.png"))
 RED_SHIP = pygame.transform.scale(RED_SHIP, (90, 60))  # Resizing red ship
 
