@@ -43,7 +43,7 @@ class Laser:                         # The constructor method of the laser class
     def draw(self, window):   # Method that draws the laser.
         window.blit(self.img, (self.x, self.y))
 
-    def move(self, vel): # Method that moves the laser
+    def move(self, vel): # Method that moves the laser.
         self.y += vel
 
     def off_screen(self, height): # This method checks if the laser is off the screen. 
@@ -79,6 +79,7 @@ class Ship:         # The consturctor method of the ship class.
             elif laser.collision(obj):
                 obj.health -= 10
                 self.lasers.remove(laser)
+
 
     def cooldown(self): #
         if self.cool_down_counter >= self.COOLDOWN:
