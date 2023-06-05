@@ -33,30 +33,30 @@ PURPLE_LASER = pygame.image.load(os.path.join("assets", "pixel_laser_purple.png"
 # Background
 BG = pygame.transform.scale(pygame.image.load(os.path.join("assets", "background-black.png")), (WIDTH, HEIGHT))
 
-class Laser:
-    def __init__(self, x, y, img):
-        self.x = x
-        self.y = y
+class Laser:                         # The constructor method of the laser class. 
+    def __init__(self, x, y, img):   # It initializes the object and sets its initial attributes. 
+        self.x = x                   # The parameters x and y represent the initial position of the laser, 
+        self.y = y                   # and img is the image of the laser. 
         self.img = img
         self.mask = pygame.mask.from_surface(self.img)
 
-    def draw(self, window):
+    def draw(self, window):   # Method that draws the laser.
         window.blit(self.img, (self.x, self.y))
 
-    def move(self, vel):
+    def move(self, vel): # Method that moves the laser
         self.y += vel
 
-    def off_screen(self, height):
-        return not(self.y <= height and self.y >= 0)
+    def off_screen(self, height): # This method checks if the laser is off the screen. 
+        return not(self.y <= height and self.y >= 0)    #It takes a height parameter, which represents the height of the game window. 
 
-    def collision(self, obj):
+    def collision(self, obj):  # Check the laser colided with different object.
         return collide(self, obj)
 
 
-class Ship:
+class Ship:         # The consturctor method of the ship class.
     COOLDOWN = 30
 
-    def __init__(self, x, y, health=100):
+    def __init__(self, x, y, health=100):   # Initializing the object with initial attributes.
         self.x = x
         self.y = y
         self.health = health
@@ -65,12 +65,12 @@ class Ship:
         self.lasers = []
         self.cool_down_counter = 0
 
-    def draw(self, window):
+    def draw(self, window):     # Draws the ship
         window.blit(self.ship_img, (self.x, self.y))
         for laser in self.lasers:
             laser.draw(window)
 
-    def move_lasers(self, vel, obj):
+    def move_lasers(self, vel, obj): # Moves the lasers  of the ship
         self.cooldown()
         for laser in self.lasers:
             laser.move(vel)
@@ -80,34 +80,34 @@ class Ship:
                 obj.health -= 10
                 self.lasers.remove(laser)
 
-    def cooldown(self):
+    def cooldown(self): #
         if self.cool_down_counter >= self.COOLDOWN:
             self.cool_down_counter = 0
         elif self.cool_down_counter > 0:
             self.cool_down_counter += 1
 
-    def shoot(self):
+    def shoot(self): # The ship can able to shoot with this method.
         if self.cool_down_counter == 0:
             laser = Laser(self.x, self.y, self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
 
-    def get_width(self):
+    def get_width(self): # Getter methods
         return self.ship_img.get_width()
 
     def get_height(self):
         return self.ship_img.get_height()
 
 
-class Player(Ship):
-    def __init__(self, x, y, health=100):
+class Player(Ship):   # Creating the player ship. With health and initial ship. Our first ship is yellow ship.
+    def __init__(self, x, y, health=100):  # And whenever the ship levels up, it changes its form. My friend Değer will explain.
         super().__init__(x, y, health)
         self.ship_img = YELLOW_SPACE_SHIP
         self.laser_img = YELLOW_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.max_health = health
 
-    def move_lasers(self, vel, objs):
+    def move_lasers(self, vel, objs):  # Method that moves the lasers.
         self.cooldown()
         for laser in self.lasers:
             laser.move(vel)
@@ -120,23 +120,23 @@ class Player(Ship):
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 
-    def draw(self, window):
+    def draw(self, window): # Method that draws the player ship.
         super().draw(window)
         self.healthbar(window)
 
-    def healthbar(self, window):
+    def healthbar(self, window): # Method that draws the healthbard under the ship.
         pygame.draw.rect(window, (255, 0, 0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health / self.max_health), 10))
 
 
-class Enemy(Ship):
+class Enemy(Ship):  # We have three different enemy ships, they also have corresponding colored lasers.
     COLOR_MAP = {
                 "red": (RED_SPACE_SHIP, RED_LASER),
                 "green": (GREEN_SPACE_SHIP, GREEN_LASER),
                 "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
                 }
 
-    def __init__(self, x, y, color, health=100):
+    def __init__(self, x, y, color, health=100):  
         super().__init__(x, y, health)
         self.ship_img, self.laser_img = self.COLOR_MAP[color]
         self.mask = pygame.mask.from_surface(self.ship_img)
